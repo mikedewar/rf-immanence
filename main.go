@@ -12,6 +12,7 @@ import (
 	"strings"
 )
 
+// scan a range of the spectrum, emitting the result periodically. This just wraps http://kmkeen.com/rtl-power/index.html
 func scan(outChan chan []byte, quitChan chan bool) {
 	cmd := exec.Command("/usr/local/bin/rtl_power", "-f", "118M:137M:8k", "-g", "50", "-i", "10")
 	stdout, _ := cmd.StdoutPipe()
