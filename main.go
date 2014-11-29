@@ -44,6 +44,8 @@ func scan(outChan chan []byte, quitChan chan bool) {
 					τ = t
 				}
 				if t != τ {
+					// these next few lines perform a local normalisation.
+					// TODO make this normalise across the possible scale of values, rathe than just the current frame's observations.
 					min := data[0]
 					for _, value := range data {
 						if value < min {
@@ -63,6 +65,7 @@ func scan(outChan chan []byte, quitChan chan bool) {
 					for i, _ := range data {
 						data[i] *= scale
 					}
+					// marshal and send for broadcasting
 					out, err := json.Marshal(data)
 					if err != nil {
 						log.Fatal(err)
