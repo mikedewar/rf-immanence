@@ -1,0 +1,28 @@
+<canvas id="stage" width="5632" height="720"></canvas>
+<script>
+var width = 5632;
+var c = document.getElementById("stage");
+var ctx = c.getContext("2d");
+var img = ctx.getImageData(0,0,width,720);
+var data = img.data;
+
+
+var w = new WebSocket("ws://localhost:8080/ws");
+w.onmessage = function(a){
+    var newData = JSON.parse(a.data)
+    
+    var n = data.subarray(width * 4, width * 720 * 4);
+    data.set(n, 0);
+    var x = 0
+    for(var i = width * 719 * 4; i < width * 720 * 4; i+=4){
+        data[i] = Math.floor(newData[x])
+        data[i + 1] = Math.floor(newData[x])
+        data[i + 2] = Math.floor(newData[x])
+        data[i + 3] = Math.floor(newData[x])
+        x++
+    }
+    img.data.set(data);
+    ctx.putImageData(img, 0,0);
+}
+</script>
+
